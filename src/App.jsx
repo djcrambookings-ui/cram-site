@@ -379,8 +379,8 @@ function HomePkgCard({p, navigate}) {
 
 // ── HOME ─────────────────────────────────────────────────────────
 function Home({navigate, packages, reviews}) {
-  const HERO_VID="https://c-rament.com.au/wp-content/uploads/2025/04/master-24-1.mp4";
-  const ABOUT_IMG="https://c-rament.com.au/wp-content/uploads/2025/04/20190816_174758-1024x498.jpg";
+  const HERO_VID="/media/master-24-1.mp4";
+  const ABOUT_IMG="/media/20190816_174758-1024x498.jpg";
   const services=[
     {t:"Wedding DJ Services",d:"Make your special day unforgettable. I tailor the music to your style and keep guests dancing all night."},
     {t:"Corporate Events",d:"Add class and excitement to your event — from background music to a full dance party."},
@@ -485,9 +485,9 @@ function Home({navigate, packages, reviews}) {
 // ── SERVICES ─────────────────────────────────────────────────────
 function Services({navigate, packages, addons}) {
   const svc=[
-    {t:"Wedding DJ Services",d:"Make your special day unforgettable with professional wedding DJ services. I tailor the music to fit your style and keep your guests dancing all night long.",v:"https://c-rament.com.au/wp-content/uploads/2025/04/20220319_230013.mp4"},
-    {t:"Corporate Events",d:"Add a touch of class and excitement to your corporate events. From background music to full dance parties, I've got you covered.",v:"https://c-rament.com.au/wp-content/uploads/2025/04/production_id_4124198-1080p.mp4"},
-    {t:"Birthday Parties",d:"Celebrate your birthday with an epic party. I know how to set the mood and ensure everyone has a great time.",v:"https://c-rament.com.au/wp-content/uploads/2025/04/video-1080p.mp4"},
+    {t:"Wedding DJ Services",d:"Make your special day unforgettable with professional wedding DJ services. I tailor the music to fit your style and keep your guests dancing all night long.",v:"/media/20220319_230013.mp4"},
+    {t:"Corporate Events",d:"Add a touch of class and excitement to your corporate events. From background music to full dance parties, I've got you covered.",v:"/media/production_id_4124198-1080p.mp4"},
+    {t:"Birthday Parties",d:"Celebrate your birthday with an epic party. I know how to set the mood and ensure everyone has a great time.",v:"/media/video-1080p.mp4"},
   ];
   return (
     <div style={{maxWidth:1000,margin:"0 auto",padding:"34px 16px 10px"}}>
@@ -562,10 +562,10 @@ function Services({navigate, packages, addons}) {
 // video banners stacked down the page, closing with a "let's chat" CTA.
 function Gallery({navigate}) {
   const vids=[
-    {src:"https://c-rament.com.au/wp-content/uploads/2025/04/use-this-one.mp4",label:"On the decks"},
-    {src:"https://c-rament.com.au/wp-content/uploads/2025/04/20220917_211838.mp4",label:"Dance floor energy"},
-    {src:"https://c-rament.com.au/wp-content/uploads/2025/04/another-one-to-use-1.mp4",label:"Lighting the room"},
-    {src:"https://c-rament.com.au/wp-content/uploads/2025/04/20220319_230013.mp4",label:"Party in full swing"},
+    {src:"/media/use-this-one.mp4",label:"On the decks"},
+    {src:"/media/20220917_211838.mp4",label:"Dance floor energy"},
+    {src:"/media/another-one-to-use-1.mp4",label:"Lighting the room"},
+    {src:"/media/20220319_230013.mp4",label:"Party in full swing"},
   ];
   return (
     <div>
