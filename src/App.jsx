@@ -115,9 +115,11 @@ const DEFAULT_BIZ={name:"C-RAM Entertainment",abn:"",address:"Melbourne, VIC 300
 
 const OCCASIONS = ["Birthday Party","Wedding","Corporate","Engagement","Other"];
 
-function GetInTouch({biz, onSubmitLead, embedded=false, packages=FALLBACK_PACKAGES}) {
+function GetInTouch({biz, onSubmitLead, embedded=false, packages=FALLBACK_PACKAGES, initialService=""}) {
   const blank = {name:"",email:"",phone:"",location:"",people:"",eventDate:"",occasion:"",service:"",message:""};
-  const [form, setForm] = useState(blank);
+  const [form, setForm] = useState(() => ({...blank, service: initialService}));
+  // If they arrived by tapping a "Book [package]" button, pre-select that package.
+  useEffect(() => { if (initialService) setForm(f => ({...f, service: initialService})); }, [initialService]);
   const [status, setStatus] = useState("idle"); // idle | sending | sent | error
   const [errorMsg, setErrorMsg] = useState("");
   const set = (k,v) => setForm(f => ({...f,[k]:v}));
@@ -219,7 +221,7 @@ ${form.message}`;
           <Card style={{textAlign:"center",padding:"38px 22px"}}>
             <div style={{fontSize:42,marginBottom:10}}>🎉</div>
             <h3 style={{fontFamily:"Bebas Neue,sans-serif",fontSize:28,letterSpacing:1,color:C.green}}>Enquiry sent!</h3>
-            <p style={{color:C.muted,fontSize:14,marginTop:8,lineHeight:1.5}}>Thanks — we've got your details and will be in touch shortly.</p>
+            <p style={{color:C.muted,fontSize:14,marginTop:8,lineHeight:1.5}}>Thanks — I've got your details and will be in touch shortly.</p>
             <div style={{marginTop:18}}><Btn variant="outline" onClick={() => setStatus("idle")}>Send another</Btn></div>
           </Card>
         ) : (
@@ -370,7 +372,7 @@ function HomePkgCard({p, navigate}) {
           </li>
         )}
       </ul>
-      <Btn onClick={()=>navigate("contact")} variant={p.tag==="MOST POPULAR"?"primary":"outline"} style={{width:"100%"}}>{p.cta}</Btn>
+      <Btn onClick={()=>navigate("contact", `${p.name} — ${fmt$(p.price)}`)} variant={p.tag==="MOST POPULAR"?"primary":"outline"} style={{width:"100%"}}>{p.cta}</Btn>
     </Card>
   );
 }
@@ -380,14 +382,14 @@ function Home({navigate, packages, reviews}) {
   const HERO_VID="https://c-rament.com.au/wp-content/uploads/2025/04/master-24-1.mp4";
   const ABOUT_IMG="https://c-rament.com.au/wp-content/uploads/2025/04/20190816_174758-1024x498.jpg";
   const services=[
-    {t:"Wedding DJ Services",d:"Make your special day unforgettable. We tailor the music to your style and keep guests dancing all night."},
+    {t:"Wedding DJ Services",d:"Make your special day unforgettable. I tailor the music to your style and keep guests dancing all night."},
     {t:"Corporate Events",d:"Add class and excitement to your event — from background music to a full dance party."},
-    {t:"Birthday Parties",d:"Celebrate with an epic party. We set the mood and make sure everyone has a great time."},
+    {t:"Birthday Parties",d:"Celebrate with an epic party. I set the mood and make sure everyone has a great time."},
   ];
   const values=[
-    {t:"Commitment to Quality",d:"We believe in the power of fun, enjoyable music to bring people together — creating memorable experiences that resonate."},
-    {t:"How We Can Help",d:"A wide range of services including event planning, artist booking and venue management — from intimate gatherings to large-scale events."},
-    {t:"Personalised Collaboration",d:"From the initial consultation to the final track of the night, we work closely with you so every detail is perfectly in tune."},
+    {t:"Commitment to Quality",d:"I believe in the power of fun, enjoyable music to bring people together — creating memorable experiences that resonate."},
+    {t:"How I Can Help",d:"A wide range of services including event planning, artist booking and venue management — from intimate gatherings to large-scale events."},
+    {t:"Personalised Collaboration",d:"From the initial consultation to the final track of the night, I work closely with you so every detail is perfectly in tune."},
   ];
   return (
     <div>
@@ -399,7 +401,7 @@ function Home({navigate, packages, reviews}) {
         <div style={{position:"relative",maxWidth:880,margin:"0 auto",padding:"90px 18px",textAlign:"center"}}>
           <div style={{display:"flex",justifyContent:"center",marginBottom:18}}><EQBars/></div>
           <h1 style={{fontFamily:"Bebas Neue,sans-serif",fontSize:"clamp(48px,10vw,96px)",letterSpacing:3,lineHeight:0.95,color:C.text,textShadow:"0 2px 24px rgba(0,0,0,0.7)"}}>C-RAM<br/><span style={{color:C.gold}}>ENTERTAINMENT</span></h1>
-          <p style={{color:C.text,fontSize:"clamp(15px,2.4vw,19px)",maxWidth:560,margin:"18px auto 0",lineHeight:1.5,textShadow:"0 1px 12px rgba(0,0,0,0.8)"}}>As a DJ based in Melbourne, I'm prepared to elevate your wedding, corporate event or celebration.</p>
+          <p style={{color:C.text,fontSize:"clamp(15px,2.4vw,19px)",maxWidth:560,margin:"18px auto 0",lineHeight:1.5,textShadow:"0 1px 12px rgba(0,0,0,0.8)"}}>As a Melbourne DJ, I'll make your wedding, corporate event or celebration unforgettable.</p>
           <div style={{display:"flex",gap:12,justifyContent:"center",flexWrap:"wrap",marginTop:28}}>
             <Btn onClick={()=>navigate("contact")} style={{padding:"14px 30px",fontSize:15}}>Get In Touch</Btn>
             <Btn variant="ghost" onClick={()=>navigate("services")} style={{padding:"14px 30px",fontSize:15,background:"rgba(10,10,15,0.35)",backdropFilter:"blur(4px)"}}>View Services</Btn>
@@ -432,7 +434,7 @@ function Home({navigate, packages, reviews}) {
         </section>
 
         <section style={{padding:"0 0 50px"}}>
-          <h2 style={{fontFamily:"Bebas Neue,sans-serif",fontSize:32,letterSpacing:1,color:C.text,textAlign:"center",marginBottom:22}}>What We Do</h2>
+          <h2 style={{fontFamily:"Bebas Neue,sans-serif",fontSize:32,letterSpacing:1,color:C.text,textAlign:"center",marginBottom:22}}>What I Do</h2>
           <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(240px,1fr))",gap:16}}>
             {services.map(s=>(
               <Card key={s.t} style={{cursor:"pointer"}}>
@@ -483,15 +485,15 @@ function Home({navigate, packages, reviews}) {
 // ── SERVICES ─────────────────────────────────────────────────────
 function Services({navigate, packages, addons}) {
   const svc=[
-    {t:"Wedding DJ Services",d:"Make your special day unforgettable with professional wedding DJ services. We tailor the music to fit your style and keep your guests dancing all night long.",v:"https://c-rament.com.au/wp-content/uploads/2025/04/20220319_230013.mp4"},
-    {t:"Corporate Events",d:"Add a touch of class and excitement to your corporate events with our DJ services. From background music to full dance parties, we've got you covered.",v:"https://c-rament.com.au/wp-content/uploads/2025/04/production_id_4124198-1080p.mp4"},
-    {t:"Birthday Parties",d:"Celebrate your birthday with an epic party. We know how to set the mood and ensure everyone has a great time.",v:"https://c-rament.com.au/wp-content/uploads/2025/04/video-1080p.mp4"},
+    {t:"Wedding DJ Services",d:"Make your special day unforgettable with professional wedding DJ services. I tailor the music to fit your style and keep your guests dancing all night long.",v:"https://c-rament.com.au/wp-content/uploads/2025/04/20220319_230013.mp4"},
+    {t:"Corporate Events",d:"Add a touch of class and excitement to your corporate events. From background music to full dance parties, I've got you covered.",v:"https://c-rament.com.au/wp-content/uploads/2025/04/production_id_4124198-1080p.mp4"},
+    {t:"Birthday Parties",d:"Celebrate your birthday with an epic party. I know how to set the mood and ensure everyone has a great time.",v:"https://c-rament.com.au/wp-content/uploads/2025/04/video-1080p.mp4"},
   ];
   return (
     <div style={{maxWidth:1000,margin:"0 auto",padding:"34px 16px 10px"}}>
       <div style={{textAlign:"center",marginBottom:30}}>
         <h1 style={{fontFamily:"Bebas Neue,sans-serif",fontSize:"clamp(38px,7vw,60px)",letterSpacing:2,color:C.text}}>OUR SERVICES</h1>
-        <p style={{color:C.muted,fontSize:15,marginTop:6}}>Whatever the occasion, we bring the energy.</p>
+        <p style={{color:C.muted,fontSize:15,marginTop:6}}>Whatever the occasion, I bring the energy.</p>
       </div>
 
       {/* Full-width video banners with the text over the top — same layout
@@ -524,7 +526,7 @@ function Services({navigate, packages, addons}) {
             <ul style={{listStyle:"none",margin:0,padding:0,display:"flex",flexDirection:"column",gap:7,marginBottom:16}}>
               {p.includes.map(inc=><li key={inc.name} style={{color:C.muted,fontSize:13,display:"flex",gap:8}}><span style={{color:C.green}}>✓</span><span><b style={{color:C.text,fontWeight:600}}>{inc.name}</b>{inc.detail?<> — {inc.detail}</>:null}</span></li>)}
             </ul>
-            <Btn onClick={()=>navigate("contact")} variant={p.tag==="MOST POPULAR"?"primary":"outline"} style={{width:"100%"}}>{p.cta}</Btn>
+            <Btn onClick={()=>navigate("contact", `${p.name} — ${fmt$(p.price)}`)} variant={p.tag==="MOST POPULAR"?"primary":"outline"} style={{width:"100%"}}>{p.cta}</Btn>
           </Card>
         ))}
       </div>
@@ -570,7 +572,7 @@ function Gallery({navigate}) {
       <div style={{textAlign:"center",padding:"36px 16px 4px"}}>
         <div style={{display:"flex",justifyContent:"center",marginBottom:14}}><EQBars/></div>
         <h1 style={{fontFamily:"Bebas Neue,sans-serif",fontSize:"clamp(38px,7vw,60px)",letterSpacing:2,color:C.text}}>GALLERY</h1>
-        <p style={{color:C.muted,fontSize:15,marginTop:6}}>A look at the dance-floors we've lit up.</p>
+        <p style={{color:C.muted,fontSize:15,marginTop:6}}>A look at the dance-floors I've lit up.</p>
       </div>
       <div style={{display:"flex",flexDirection:"column",gap:28,maxWidth:1180,margin:"24px auto 0",padding:"0 16px"}}>
         {vids.map((v,i)=>(
@@ -603,10 +605,12 @@ export default function App() {
     return "home";
   };
   const [route, setRoute] = useState(pathToRoute());
-  const navigate = (r) => {
+  const [bookService, setBookService] = useState("");
+  const navigate = (r, service = "") => {
     const paths = { home: "/", services: "/services", gallery: "/gallery", contact: "/get-in-touch" };
     window.history.pushState({}, "", paths[r] || "/");
     setRoute(r);
+    setBookService(service);
     window.scrollTo(0, 0);
   };
   useEffect(() => {
@@ -620,7 +624,7 @@ export default function App() {
       {route === "home" && <Home navigate={navigate} packages={packages} reviews={reviews} />}
       {route === "services" && <Services navigate={navigate} packages={packages} addons={addons} />}
       {route === "gallery" && <Gallery navigate={navigate} />}
-      {route === "contact" && <GetInTouch biz={DEFAULT_BIZ} embedded={true} packages={packages} />}
+      {route === "contact" && <GetInTouch biz={DEFAULT_BIZ} embedded={true} packages={packages} initialService={bookService} />}
     </PublicShell>
   );
 }
